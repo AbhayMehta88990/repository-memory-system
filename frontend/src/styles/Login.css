@@ -1,0 +1,230 @@
+/* Login Page Styles */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  background-color: var(--bg-color);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 600px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.login-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--headline);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: -0.5px;
+}
+
+.login-header p {
+  font-size: 1rem;
+  color: var(--paragraph);
+}
+
+/* Login Card */
+.login-content {
+  padding: var(--spacing-2xl);
+}
+
+.login-content h2 {
+  font-size: 1.75rem;
+  color: var(--headline);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.login-description {
+  text-align: center;
+  color: var(--paragraph);
+  margin-bottom: var(--spacing-2xl);
+  font-size: 1rem;
+}
+
+/* Login Options */
+.login-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.login-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  background-color: var(--main);
+  border: 2px solid var(--secondary);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.login-option:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--highlight);
+}
+
+.login-option.demo:hover {
+  background-color: var(--highlight);
+}
+
+.login-option.demo:hover .option-content h3,
+.login-option.demo:hover .option-content p {
+  color: var(--button-text);
+}
+
+.login-option.demo:hover .option-icon {
+  background-color: var(--button-text);
+  color: var(--highlight);
+  transform: scale(1.1);
+}
+
+.login-option.github:hover {
+  background-color: var(--secondary);
+}
+
+.login-option.github:hover .option-icon {
+  background-color: var(--main);
+  color: var(--highlight);
+  transform: scale(1.1);
+}
+
+.option-icon {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secondary);
+  border-radius: var(--radius-lg);
+  color: var(--highlight);
+  font-size: 2rem;
+  transition: all 0.3s;
+}
+
+.option-content {
+  flex: 1;
+}
+
+.option-content h3 {
+  font-size: 1.25rem;
+  color: var(--headline);
+  margin-bottom: var(--spacing-xs);
+  transition: color 0.3s;
+}
+
+.option-content p {
+  font-size: 0.9rem;
+  color: var(--paragraph);
+  margin-bottom: var(--spacing-sm);
+  transition: color 0.3s;
+}
+
+.option-badge {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.option-badge.active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.option-badge.coming-soon {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Login Info */
+.login-info {
+  padding: var(--spacing-lg);
+  background-color: var(--secondary);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--highlight);
+}
+
+.login-info p {
+  font-size: 0.875rem;
+  color: var(--paragraph);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.login-info strong {
+  color: var(--headline);
+  font-weight: 600;
+}
+
+/* Footer */
+.login-footer {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+  color: var(--paragraph);
+  font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-page {
+    padding: var(--spacing-md);
+  }
+
+  .login-content {
+    padding: var(--spacing-xl);
+  }
+
+  .login-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-option {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--spacing-lg);
+  }
+
+  .option-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .option-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .option-content p {
+    font-size: 0.85rem;
+  }
+}

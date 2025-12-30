@@ -1,0 +1,245 @@
+/* Dashboard Styles */
+.dashboard {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0;
+}
+
+/* Demo Info Banner */
+.demo-info-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: var(--button-text);
+  margin-bottom: var(--spacing-2xl);
+  border: none;
+}
+
+.demo-info-content h3 {
+  color: var(--button-text);
+  margin-bottom: var(--spacing-md);
+  font-size: 1.25rem;
+}
+
+.demo-info-content p {
+  color: var(--button-text);
+  line-height: 1.7;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.95;
+}
+
+.demo-info-content strong {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.demo-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.feature-tag {
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+/* Stats Grid */
+.stats-grid {
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Quick Actions */
+.quick-actions h2 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.action-card {
+  background-color: var(--secondary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  text-decoration: none;
+  color: var(--headline);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  background-color: var(--highlight);
+  color: var(--button-text);
+}
+
+.action-icon {
+  color: var(--highlight);
+  margin-bottom: var(--spacing-md);
+  transition: color 0.2s;
+}
+
+.action-card:hover .action-icon {
+  color: var(--button-text);
+}
+
+.action-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.action-card p {
+  font-size: 0.875rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Languages List */
+.languages-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.language-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  background-color: var(--secondary);
+  border-radius: var(--radius-md);
+}
+
+.language-name {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* File Items */
+.file-name {
+  font-weight: 600;
+  color: var(--headline);
+  margin-bottom: var(--spacing-xs);
+}
+
+.file-path {
+  font-size: 0.875rem;
+  color: var(--paragraph);
+  font-family: monospace;
+}
+
+/* Code Statistics */
+.code-stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.stat-section {
+  background-color: var(--secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--highlight);
+}
+
+.stat-header .stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--headline);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-count {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--highlight);
+}
+
+.stat-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-sm);
+  background-color: var(--main);
+  border-radius: var(--radius-sm);
+  transition: transform 0.2s;
+}
+
+.detail-item:hover {
+  transform: translateX(2px);
+}
+
+.detail-item.more {
+  background-color: transparent;
+  font-style: italic;
+}
+
+.detail-name {
+  font-weight: 500;
+  color: var(--headline);
+  font-size: 0.9rem;
+}
+
+.detail-name.no-data {
+  color: var(--paragraph);
+  font-style: italic;
+}
+
+.detail-file {
+  font-size: 0.75rem;
+  color: var(--paragraph);
+  font-family: monospace;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+}
