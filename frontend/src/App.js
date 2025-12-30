@@ -27,12 +27,21 @@ function App() {
       const initializeApp = async () => {
         try {
           setLoading(true);
+          console.log('Attempting to fetch repository data...');
           const response = await analyzeRepository();
+          console.log('Repository data received:', response);
           setAnalysisData(response.data);
           setError(null);
         } catch (err) {
           console.error('Failed to analyze repository:', err);
-          setError('Failed to load repository data. Please check if the backend is running.');
+          console.error('Error details:', err.message);
+          if (err.code === 'ECONNABORTED') {
+            setError('Request timeout. Backend may be starting up. Please wait 30 seconds and refresh.');
+          } else if (err.message.includes('Network Error')) {
+            setError('Cannot connect to backend. Please check the API URL in environment variables.');
+          } else {
+            setError(`Failed to load repository data: ${err.message}`);
+          }
         } finally {
           setLoading(false);
         }
