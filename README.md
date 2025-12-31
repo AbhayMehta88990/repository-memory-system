@@ -111,15 +111,6 @@ The project includes a **test repository** (E-Commerce API) with:
 - Authentication system
 - RESTful API design
 
-##  Demo Presentation Tips
-
-1. Start with the **problem statement**: Show the pain of onboarding
-2. Walk through the **Dashboard**: Highlight key statistics
-3. Demo the **Onboarding Tour**: Show AI-generated steps
-4. Try the **Chat Interface**: Ask live questions
-5. Show **Starter Tasks**: Demonstrate task suggestions
-6. Explain the **technology**: How it works under the hood
-
 ##  Future Enhancements
 
 - GitHub OAuth integration
