@@ -177,12 +177,12 @@ They can be embedded as follows:
 ---
 
 ###  System Flow Chart
-![System Flow Chart](./Flow charts.svg)
+![System Flow Chart](./Flow-charts.svg)
 
 ---
 
 ###  Data Flow Diagram
-![Data Flow Diagram](./Data Flow Diagram.svg)
+![Data Flow Diagram](./Data0-Flow-Diagram.svg)
 
 ---
 
