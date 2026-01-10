@@ -8,6 +8,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -64,6 +65,41 @@
   font-size: 0.875rem;
   font-weight: 500;
   backdrop-filter: blur(10px);
+}
+
+/* GitHub Info Banner */
+.github-info-banner {
+  background: linear-gradient(135deg, var(--highlight) 0%, #6b5a3e 100%);
+  color: var(--button-text);
+  margin-bottom: var(--spacing-2xl);
+  border: none;
+}
+
+.github-info-content {
+  text-align: center;
+}
+
+.repo-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.github-info-content h3 {
+  color: var(--button-text);
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.5rem;
+}
+
+.github-info-content .repo-description {
+  color: var(--button-text);
+  opacity: 0.9;
+  margin: 0;
 }
 
 /* Stats Grid */

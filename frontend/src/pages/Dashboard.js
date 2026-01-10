@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiCode, FiFileText, FiLayers } from 'react-icons/fi';
+import { FiCode, FiFileText, FiLayers, FiGitBranch } from 'react-icons/fi';
 import '../styles/Dashboard.css';
 
-const Dashboard = ({ analysisData }) => {
+const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null }) => {
   if (!analysisData) {
     return <div>Loading...</div>;
   }
@@ -12,23 +12,39 @@ const Dashboard = ({ analysisData }) => {
 
   return (
     <div className="dashboard">
-      {/* Demo Info Banner */}
-      <div className="demo-info-banner card">
-        <div className="demo-info-content">
-          <h3>Demo Mode Active</h3>
-          <p>
-            Currently analyzing a <strong>test e-commerce API repository</strong> for demonstration purposes. 
-            In production, this system will integrate with <strong>GitHub OAuth</strong> to analyze any repository 
-            you have access to. Simply connect your GitHub account, select a repository, and get instant 
-            AI-powered insights and onboarding tours.
-          </p>
-          <div className="demo-features">
-            <span className="feature-tag">Test Repository</span>
-            <span className="feature-tag">GitHub Integration (Coming Soon)</span>
-            <span className="feature-tag">Any Public/Private Repo</span>
+      {/* Demo Info Banner - Only show in demo mode */}
+      {!isGitHubMode && (
+        <div className="demo-info-banner card">
+          <div className="demo-info-content">
+            <h3>Demo Mode Active</h3>
+            <p>
+              Currently analyzing a <strong>test e-commerce API repository</strong> for demonstration purposes.
+              This showcases how the system analyzes code structure, generates onboarding tours,
+              and provides intelligent answers about the codebase.
+            </p>
+            <div className="demo-features">
+              <span className="feature-tag">Test Repository</span>
+              <span className="feature-tag">All Features Available</span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* GitHub Mode Banner */}
+      {isGitHubMode && selectedRepo && (
+        <div className="github-info-banner card">
+          <div className="github-info-content">
+            <div className="repo-indicator">
+              <FiGitBranch />
+              <span>Analyzing repository from your GitHub account</span>
+            </div>
+            <h3>{selectedRepo.full_name}</h3>
+            {selectedRepo.description && (
+              <p className="repo-description">{selectedRepo.description}</p>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="dashboard-header">
         <h1>Welcome to {summary.projectName}</h1>
