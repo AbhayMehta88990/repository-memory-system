@@ -113,6 +113,12 @@ function App() {
     setAnalysisData(null); // Reset to trigger fetch
   };
 
+  const handleChangeRepo = () => {
+    setSelectedRepo(null);
+    setAnalysisData(null);
+    localStorage.removeItem('selected_repo');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('github_token');
     localStorage.removeItem('github_user');
@@ -185,6 +191,7 @@ function App() {
                   analysisData={analysisData}
                   isGitHubMode={isGitHubMode}
                   selectedRepo={selectedRepo}
+                  onChangeRepo={isGitHubMode ? handleChangeRepo : undefined}
                 />
               }
             />
