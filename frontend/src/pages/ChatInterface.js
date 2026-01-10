@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FiBook, FiCode, FiDatabase, FiLock, FiMap } from 'react-icons/fi';
 import { askQuestion } from '../services/api';
+import FeatureUnavailable from '../components/FeatureUnavailable';
 import '../styles/ChatInterface.css';
 
-const ChatInterface = ({ analysisData }) => {
+const ChatInterface = ({ analysisData, isGitHubMode = false }) => {
   const [messages, setMessages] = useState([
     {
       type: 'assistant',
@@ -21,6 +22,16 @@ const ChatInterface = ({ analysisData }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Show unavailable state for GitHub mode
+  if (isGitHubMode) {
+    return (
+      <FeatureUnavailable
+        title="Ask Questions"
+        featureName="The intelligent Q&A system"
+      />
+    );
+  }
 
   const predefinedQuestions = [
     {
@@ -59,7 +70,7 @@ const ChatInterface = ({ analysisData }) => {
 
     try {
       const response = await askQuestion(question);
-      
+
       const assistantMessage = {
         type: 'assistant',
         text: response.data.answer,
@@ -92,8 +103,8 @@ const ChatInterface = ({ analysisData }) => {
         {/* Messages */}
         <div className="messages-container">
           {messages.map((message, idx) => (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className={`message ${message.type} ${message.error ? 'error' : ''}`}
             >
               <div className={`message-avatar ${message.type}`}>

@@ -81,4 +81,21 @@ export const getUserRepos = async () => {
   return response.data;
 };
 
+/**
+ * Get repository statistics from GitHub
+ */
+export const getRepoStats = async (repoFullName) => {
+  const token = localStorage.getItem('github_token');
+  if (!token) {
+    throw new Error('No GitHub token found');
+  }
+
+  const response = await api.get(`/api/auth/repo/${encodeURIComponent(repoFullName)}/stats`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export default api;

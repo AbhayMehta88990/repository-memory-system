@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronLeft, FiChevronRight, FiCheckCircle } from 'react-icons/fi';
 import LoadingSpinner from '../components/LoadingSpinner';
+import FeatureUnavailable from '../components/FeatureUnavailable';
 import { generateTour } from '../services/api';
 import '../styles/OnboardingTour.css';
 
-const OnboardingTour = ({ analysisData }) => {
+const OnboardingTour = ({ analysisData, isGitHubMode = false }) => {
   const [tour, setTour] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Skip fetching if in GitHub mode
+    if (isGitHubMode) {
+      setLoading(false);
+      return;
+    }
+
     const fetchTour = async () => {
       try {
         setLoading(true);
@@ -26,7 +33,17 @@ const OnboardingTour = ({ analysisData }) => {
     };
 
     fetchTour();
-  }, []);
+  }, [isGitHubMode]);
+
+  // Show unavailable state for GitHub mode
+  if (isGitHubMode) {
+    return (
+      <FeatureUnavailable
+        title="Onboarding Tour"
+        featureName="The guided onboarding tour"
+      />
+    );
+  }
 
   if (loading) {
     return (
@@ -87,8 +104,8 @@ const OnboardingTour = ({ analysisData }) => {
           <span>{Math.round(progress)}% Complete</span>
         </div>
         <div className="progress-bar">
-          <div 
-            className="progress-fill" 
+          <div
+            className="progress-fill"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
@@ -100,7 +117,7 @@ const OnboardingTour = ({ analysisData }) => {
           <span className="step-number">Step {currentStepData.step || currentStep + 1}</span>
           {isLastStep && <FiCheckCircle className="completion-icon" />}
         </div>
-        
+
         <h2 className="step-title">{currentStepData.title}</h2>
         <p className="step-description">{currentStepData.description}</p>
 
@@ -120,7 +137,7 @@ const OnboardingTour = ({ analysisData }) => {
 
       {/* Navigation */}
       <div className="tour-navigation">
-        <button 
+        <button
           className="btn btn-outline"
           onClick={handlePrevious}
           disabled={isFirstStep}
@@ -130,7 +147,7 @@ const OnboardingTour = ({ analysisData }) => {
 
         <div className="step-indicators">
           {tour.map((_, idx) => (
-            <div 
+            <div
               key={idx}
               className={`step-dot ${idx === currentStep ? 'active' : ''} ${idx < currentStep ? 'completed' : ''}`}
               onClick={() => setCurrentStep(idx)}

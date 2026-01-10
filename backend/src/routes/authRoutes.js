@@ -172,4 +172,90 @@ router.get('/verify', async (req, res) => {
     }
 });
 
+/**
+ * @route GET /api/auth/repo/:repoFullName/stats
+ * @desc Get repository statistics from GitHub
+ */
+router.get('/repo/:repoFullName/stats', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    const { repoFullName } = req.params;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const [owner, repo] = decodeURIComponent(repoFullName).split('/');
+
+    try {
+        // Fetch repository info
+        const repoResponse = await axios.get(`https://api.github.com/repos/${owner}/${repo}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+            },
+        });
+
+        // Fetch languages
+        const languagesResponse = await axios.get(`https://api.github.com/repos/${owner}/${repo}/languages`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+            },
+        });
+
+        // Fetch repo contents (root level)
+        const contentsResponse = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contents`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+            },
+        });
+
+        const repoData = repoResponse.data;
+        const languages = languagesResponse.data;
+        const contents = contentsResponse.data;
+
+        // Count files and build language stats
+        const languageStats = {};
+        let totalBytes = 0;
+        Object.entries(languages).forEach(([lang, bytes]) => {
+            languageStats[lang] = Math.round(bytes / 1000); // Convert to KB
+            totalBytes += bytes;
+        });
+
+        // Find entry points
+        const entryPointNames = ['index.js', 'main.js', 'app.js', 'server.js', 'index.ts', 'main.ts', 'app.ts'];
+        const entryPoints = contents
+            .filter(item => item.type === 'file' && entryPointNames.includes(item.name.toLowerCase()))
+            .map(item => ({ name: item.name, path: item.path }));
+
+        // Build response matching demo data structure
+        const analysisData = {
+            summary: {
+                projectName: repoData.name,
+                totalFiles: contents.filter(item => item.type === 'file').length,
+                totalLines: Math.round(totalBytes / 50), // Rough estimate: 50 bytes per line
+                languages: languageStats,
+            },
+            metadata: {
+                functions: [],
+                classes: [],
+                imports: Object.keys(languages).map(lang => ({ source: lang })),
+            },
+            keyFiles: {
+                entryPoints: entryPoints.length > 0 ? entryPoints : [{ name: 'Repository root', path: '/' }],
+            },
+        };
+
+        res.json({
+            success: true,
+            data: analysisData,
+        });
+    } catch (err) {
+        console.error('Failed to fetch repo stats:', err.message);
+        res.status(500).json({ success: false, message: 'Failed to fetch repository statistics' });
+    }
+});
+
 module.exports = router;

@@ -9,17 +9,20 @@ import OnboardingTour from './pages/OnboardingTour';
 import ChatInterface from './pages/ChatInterface';
 import StarterTasks from './pages/StarterTasks';
 import AuthCallback from './pages/AuthCallback';
+import RepoSelector from './pages/RepoSelector';
 
 // Components
 import Header from './components/Header';
 import LoadingSpinner from './components/LoadingSpinner';
 
 // Services
-import { analyzeRepository } from './services/api';
+import { analyzeRepository, getRepoStats } from './services/api';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isGitHubMode, setIsGitHubMode] = useState(false);
   const [githubUser, setGithubUser] = useState(null);
+  const [selectedRepo, setSelectedRepo] = useState(null);
   const [analysisData, setAnalysisData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,67 +31,105 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('github_token');
     const userStr = localStorage.getItem('github_user');
+    const repoStr = localStorage.getItem('selected_repo');
 
     if (token && userStr) {
       try {
         const user = JSON.parse(userStr);
         setGithubUser(user);
         setIsAuthenticated(true);
+        setIsGitHubMode(true);
+
+        if (repoStr) {
+          const repo = JSON.parse(repoStr);
+          setSelectedRepo(repo);
+        }
       } catch (err) {
         console.error('Failed to parse stored user data:', err);
         localStorage.removeItem('github_token');
         localStorage.removeItem('github_user');
+        localStorage.removeItem('selected_repo');
       }
     }
   }, []);
 
+  // Fetch analysis data when authenticated
   useEffect(() => {
-    if (isAuthenticated && !analysisData) {
-      const initializeApp = async () => {
+    const initializeApp = async () => {
+      // For demo mode, fetch mock data
+      if (isAuthenticated && !isGitHubMode && !analysisData) {
         try {
           setLoading(true);
-          console.log('Attempting to fetch repository data...');
           const response = await analyzeRepository();
-          console.log('Repository data received:', response);
           setAnalysisData(response.data);
           setError(null);
         } catch (err) {
           console.error('Failed to analyze repository:', err);
-          console.error('Error details:', err.message);
           if (err.code === 'ECONNABORTED') {
             setError('Request timeout. Backend may be starting up. Please wait 30 seconds and refresh.');
           } else if (err.message.includes('Network Error')) {
-            setError('Cannot connect to backend. Please check the API URL in environment variables.');
+            setError('Cannot connect to backend. Please check the API URL.');
           } else {
             setError(`Failed to load repository data: ${err.message}`);
           }
         } finally {
           setLoading(false);
         }
-      };
+      }
 
-      initializeApp();
-    }
-  }, [isAuthenticated, analysisData]);
+      // For GitHub mode with selected repo, fetch repo stats
+      if (isAuthenticated && isGitHubMode && selectedRepo && !analysisData) {
+        try {
+          setLoading(true);
+          const response = await getRepoStats(selectedRepo.full_name);
+          setAnalysisData(response.data);
+          setError(null);
+        } catch (err) {
+          console.error('Failed to fetch repo stats:', err);
+          setError('Failed to load repository statistics.');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    initializeApp();
+  }, [isAuthenticated, isGitHubMode, selectedRepo, analysisData]);
+
+  const handleDemoLogin = () => {
+    setIsAuthenticated(true);
+    setIsGitHubMode(false);
+  };
 
   const handleAuthSuccess = (authData) => {
     setGithubUser(authData.user);
     setIsAuthenticated(true);
+    setIsGitHubMode(true);
+  };
+
+  const handleRepoSelect = (repo) => {
+    setSelectedRepo(repo);
+    localStorage.setItem('selected_repo', JSON.stringify(repo));
+    setAnalysisData(null); // Reset to trigger fetch
   };
 
   const handleLogout = () => {
     localStorage.removeItem('github_token');
     localStorage.removeItem('github_user');
+    localStorage.removeItem('selected_repo');
     setGithubUser(null);
     setIsAuthenticated(false);
+    setIsGitHubMode(false);
+    setSelectedRepo(null);
     setAnalysisData(null);
   };
 
+  // Not authenticated - show login
   if (!isAuthenticated) {
     return (
       <Router>
         <Routes>
-          <Route path="/" element={<Login onLogin={() => setIsAuthenticated(true)} />} />
+          <Route path="/" element={<Login onLogin={handleDemoLogin} />} />
           <Route path="/auth/callback" element={<AuthCallback onAuthSuccess={handleAuthSuccess} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
@@ -96,6 +137,21 @@ function App() {
     );
   }
 
+  // GitHub mode but no repo selected - show repo selector
+  if (isGitHubMode && !selectedRepo) {
+    return (
+      <Router>
+        <div className="app">
+          <Header githubUser={githubUser} onLogout={handleLogout} />
+          <main className="main-content">
+            <RepoSelector onRepoSelect={handleRepoSelect} githubUser={githubUser} />
+          </main>
+        </div>
+      </Router>
+    );
+  }
+
+  // Loading state
   if (loading) {
     return (
       <div className="app-loading">
@@ -105,6 +161,7 @@ function App() {
     );
   }
 
+  // Error state
   if (error) {
     return (
       <div className="app-error">
@@ -121,10 +178,43 @@ function App() {
         <Header githubUser={githubUser} onLogout={handleLogout} />
         <main className="main-content">
           <Routes>
-            <Route path="/dashboard" element={<Dashboard analysisData={analysisData} />} />
-            <Route path="/tour" element={<OnboardingTour analysisData={analysisData} />} />
-            <Route path="/chat" element={<ChatInterface analysisData={analysisData} />} />
-            <Route path="/tasks" element={<StarterTasks analysisData={analysisData} />} />
+            <Route
+              path="/dashboard"
+              element={
+                <Dashboard
+                  analysisData={analysisData}
+                  isGitHubMode={isGitHubMode}
+                  selectedRepo={selectedRepo}
+                />
+              }
+            />
+            <Route
+              path="/tour"
+              element={
+                <OnboardingTour
+                  analysisData={analysisData}
+                  isGitHubMode={isGitHubMode}
+                />
+              }
+            />
+            <Route
+              path="/chat"
+              element={
+                <ChatInterface
+                  analysisData={analysisData}
+                  isGitHubMode={isGitHubMode}
+                />
+              }
+            />
+            <Route
+              path="/tasks"
+              element={
+                <StarterTasks
+                  analysisData={analysisData}
+                  isGitHubMode={isGitHubMode}
+                />
+              }
+            />
             <Route path="/auth/callback" element={<AuthCallback onAuthSuccess={handleAuthSuccess} />} />
             <Route path="*" element={<Navigate to="/dashboard" />} />
           </Routes>

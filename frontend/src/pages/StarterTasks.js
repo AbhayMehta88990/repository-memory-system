@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { FiCheckCircle, FiCircle } from 'react-icons/fi';
 import LoadingSpinner from '../components/LoadingSpinner';
+import FeatureUnavailable from '../components/FeatureUnavailable';
 import { getStarterTasks } from '../services/api';
 import '../styles/StarterTasks.css';
 
-const StarterTasks = ({ analysisData }) => {
+const StarterTasks = ({ analysisData, isGitHubMode = false }) => {
   const [tasks, setTasks] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [completedTasks, setCompletedTasks] = useState([]);
 
   useEffect(() => {
+    // Skip fetching if in GitHub mode
+    if (isGitHubMode) {
+      setLoading(false);
+      return;
+    }
+
     const fetchTasks = async () => {
       try {
         setLoading(true);
@@ -26,7 +33,17 @@ const StarterTasks = ({ analysisData }) => {
     };
 
     fetchTasks();
-  }, []);
+  }, [isGitHubMode]);
+
+  // Show unavailable state for GitHub mode
+  if (isGitHubMode) {
+    return (
+      <FeatureUnavailable
+        title="Starter Tasks"
+        featureName="Personalized starter task recommendations"
+      />
+    );
+  }
 
   const toggleTaskCompletion = (index) => {
     if (completedTasks.includes(index)) {
@@ -89,8 +106,8 @@ const StarterTasks = ({ analysisData }) => {
           </div>
         </div>
         <div className="progress-bar">
-          <div 
-            className="progress-fill" 
+          <div
+            className="progress-fill"
             style={{ width: `${completionPercentage}%` }}
           ></div>
         </div>
@@ -100,14 +117,14 @@ const StarterTasks = ({ analysisData }) => {
       <div className="tasks-list">
         {tasks.map((task, index) => {
           const isCompleted = completedTasks.includes(index);
-          
+
           return (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`task-card card ${isCompleted ? 'completed' : ''}`}
             >
               <div className="task-header">
-                <button 
+                <button
                   className="task-checkbox"
                   onClick={() => toggleTaskCompletion(index)}
                 >

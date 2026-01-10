@@ -1,0 +1,132 @@
+/* Feature Unavailable Styles */
+.feature-unavailable {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: var(--spacing-xl) 0;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.unavailable-card {
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+    padding: var(--spacing-2xl);
+}
+
+.unavailable-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary);
+    border-radius: 50%;
+    color: var(--highlight);
+}
+
+.unavailable-icon svg {
+    width: 36px;
+    height: 36px;
+}
+
+.unavailable-card h2 {
+    color: var(--headline);
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.5rem;
+}
+
+.unavailable-content {
+    text-align: left;
+    margin-bottom: var(--spacing-xl);
+}
+
+.main-message {
+    color: var(--paragraph);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-lg);
+}
+
+.technical-note {
+    background-color: var(--secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    border-left: 4px solid var(--highlight);
+}
+
+.note-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--headline);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+.note-header svg {
+    color: var(--highlight);
+}
+
+.technical-note p {
+    color: var(--paragraph);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+}
+
+.technical-note p:last-child {
+    margin-bottom: 0;
+}
+
+.unavailable-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.unavailable-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .unavailable-card {
+        padding: var(--spacing-xl);
+    }
+
+    .unavailable-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .unavailable-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .unavailable-actions {
+        flex-direction: column;
+    }
+
+    .unavailable-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
