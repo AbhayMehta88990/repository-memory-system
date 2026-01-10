@@ -2,13 +2,16 @@ import React from 'react';
 import { FiGithub, FiFolder } from 'react-icons/fi';
 import '../styles/Login.css';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Login = ({ onLogin }) => {
   const handleDemoRepo = () => {
     onLogin();
   };
 
   const handleGitHubLogin = () => {
-    alert('GitHub OAuth integration coming soon! For now, please use the demo repository.');
+    // Redirect to backend OAuth endpoint
+    window.location.href = `${API_URL}/api/auth/github`;
   };
 
   return (
@@ -44,15 +47,15 @@ const Login = ({ onLogin }) => {
               <div className="option-content">
                 <h3>Connect with GitHub</h3>
                 <p>Analyze any repository you have access to</p>
-                <span className="option-badge coming-soon">Coming Soon</span>
+                <span className="option-badge github-ready">Ready</span>
               </div>
             </button>
           </div>
 
           <div className="login-info">
             <p>
-              <strong>Demo Mode:</strong> Uses a test repository to showcase all features. 
-              GitHub integration will allow you to connect any public or private repository.
+              <strong>Demo Mode:</strong> Uses a test repository to showcase all features.
+              <strong> GitHub Mode:</strong> Connect your GitHub account to analyze your own repositories.
             </p>
           </div>
         </div>

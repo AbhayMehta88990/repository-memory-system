@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import OnboardingTour from './pages/OnboardingTour';
 import ChatInterface from './pages/ChatInterface';
 import StarterTasks from './pages/StarterTasks';
+import AuthCallback from './pages/AuthCallback';
 
 // Components
 import Header from './components/Header';
@@ -18,9 +19,28 @@ import { analyzeRepository } from './services/api';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [githubUser, setGithubUser] = useState(null);
   const [analysisData, setAnalysisData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Check for existing GitHub auth on mount
+  useEffect(() => {
+    const token = localStorage.getItem('github_token');
+    const userStr = localStorage.getItem('github_user');
+
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setGithubUser(user);
+        setIsAuthenticated(true);
+      } catch (err) {
+        console.error('Failed to parse stored user data:', err);
+        localStorage.removeItem('github_token');
+        localStorage.removeItem('github_user');
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated && !analysisData) {
@@ -51,11 +71,25 @@ function App() {
     }
   }, [isAuthenticated, analysisData]);
 
+  const handleAuthSuccess = (authData) => {
+    setGithubUser(authData.user);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('github_token');
+    localStorage.removeItem('github_user');
+    setGithubUser(null);
+    setIsAuthenticated(false);
+    setAnalysisData(null);
+  };
+
   if (!isAuthenticated) {
     return (
       <Router>
         <Routes>
           <Route path="/" element={<Login onLogin={() => setIsAuthenticated(true)} />} />
+          <Route path="/auth/callback" element={<AuthCallback onAuthSuccess={handleAuthSuccess} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
@@ -84,13 +118,14 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <Header />
+        <Header githubUser={githubUser} onLogout={handleLogout} />
         <main className="main-content">
           <Routes>
             <Route path="/dashboard" element={<Dashboard analysisData={analysisData} />} />
             <Route path="/tour" element={<OnboardingTour analysisData={analysisData} />} />
             <Route path="/chat" element={<ChatInterface analysisData={analysisData} />} />
             <Route path="/tasks" element={<StarterTasks analysisData={analysisData} />} />
+            <Route path="/auth/callback" element={<AuthCallback onAuthSuccess={handleAuthSuccess} />} />
             <Route path="*" element={<Navigate to="/dashboard" />} />
           </Routes>
         </main>

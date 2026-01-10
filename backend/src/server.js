@@ -6,6 +6,7 @@ dotenv.config();
 
 const repoRoutes = require('./routes/repoRoutes');
 const aiRoutes = require('./routes/aiRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -18,9 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/repo', repoRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/auth', authRoutes);
 app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'ok', 
+  res.status(200).json({
+    status: 'ok',
     message: 'Repository Memory System API is running',
     timestamp: new Date().toISOString()
   });
@@ -35,8 +37,8 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(err.statusCode || 500).json({ 
-    success: false, 
+  res.status(err.statusCode || 500).json({
+    success: false,
     message: err.message || 'Internal server error',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
