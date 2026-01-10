@@ -63,9 +63,14 @@ const Header = ({ githubUser, onLogout }) => {
               </button>
             </div>
           ) : (
-            <div className="demo-badge">
-              <FiGithub />
-              <span>Demo Mode</span>
+            <div className="user-profile">
+              <div className="demo-badge">
+                <FiGithub />
+                <span>Demo Mode</span>
+              </div>
+              <button onClick={onLogout} className="logout-button" title="Exit Demo">
+                <FiLogOut />
+              </button>
             </div>
           )}
         </div>
