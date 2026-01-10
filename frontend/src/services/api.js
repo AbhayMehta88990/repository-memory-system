@@ -52,4 +52,33 @@ export const getStarterTasks = async () => {
   return response.data;
 };
 
+/**
+ * Verify GitHub token
+ */
+export const verifyGitHubToken = async (token) => {
+  const response = await api.get('/api/auth/verify', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+/**
+ * Get user's GitHub repositories
+ */
+export const getUserRepos = async () => {
+  const token = localStorage.getItem('github_token');
+  if (!token) {
+    throw new Error('No GitHub token found');
+  }
+
+  const response = await api.get('/api/auth/user/repos', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export default api;
