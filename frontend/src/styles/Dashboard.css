@@ -269,6 +269,21 @@
   font-family: monospace;
 }
 
+/* Analysis Note for GitHub Mode */
+.analysis-note {
+  background-color: var(--secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  border-left: 3px solid var(--highlight);
+}
+
+.analysis-note p {
+  color: var(--paragraph);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .dashboard-header h1 {

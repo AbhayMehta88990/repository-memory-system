@@ -139,15 +139,27 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null }) 
               <span className="stat-count">{metadata.functions.length}</span>
             </div>
             <div className="stat-details">
-              {metadata.functions.slice(0, 5).map((func, idx) => (
-                <div key={idx} className="detail-item">
-                  <span className="detail-name">{func.name}</span>
-                  <span className="detail-file">{func.file}</span>
+              {metadata.functions.length > 0 ? (
+                <>
+                  {metadata.functions.slice(0, 5).map((func, idx) => (
+                    <div key={idx} className="detail-item">
+                      <span className="detail-name">{func.name}</span>
+                      <span className="detail-file">{func.file}</span>
+                    </div>
+                  ))}
+                  {metadata.functions.length > 5 && (
+                    <div className="detail-item more">
+                      <span className="detail-name">+{metadata.functions.length - 5} more functions</span>
+                    </div>
+                  )}
+                </>
+              ) : isGitHubMode ? (
+                <div className="analysis-note">
+                  <p>Function detection requires parsing source files, which is not available for GitHub repositories in this version. This feature works in demo mode where the codebase has been pre-analyzed.</p>
                 </div>
-              ))}
-              {metadata.functions.length > 5 && (
-                <div className="detail-item more">
-                  <span className="detail-name">+{metadata.functions.length - 5} more functions</span>
+              ) : (
+                <div className="detail-item">
+                  <span className="detail-name no-data">No functions detected</span>
                 </div>
               )}
             </div>
@@ -166,6 +178,10 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null }) 
                     <span className="detail-file">{cls.file}</span>
                   </div>
                 ))
+              ) : isGitHubMode ? (
+                <div className="analysis-note">
+                  <p>Class detection requires parsing source files, which is not available for GitHub repositories in this version. This feature works in demo mode where the codebase has been pre-analyzed.</p>
+                </div>
               ) : (
                 <div className="detail-item">
                   <span className="detail-name no-data">No classes defined</span>
