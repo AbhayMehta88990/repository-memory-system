@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiCode, FiFileText, FiLayers, FiGitBranch } from 'react-icons/fi';
+import { FiCode, FiFileText, FiLayers, FiGitBranch, FiRefreshCw } from 'react-icons/fi';
 import '../styles/Dashboard.css';
 
-const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null }) => {
+const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, onChangeRepo }) => {
   if (!analysisData) {
     return <div>Loading...</div>;
   }
@@ -41,6 +41,12 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null }) 
             <h3>{selectedRepo.full_name}</h3>
             {selectedRepo.description && (
               <p className="repo-description">{selectedRepo.description}</p>
+            )}
+            {onChangeRepo && (
+              <button onClick={onChangeRepo} className="change-repo-btn">
+                <FiRefreshCw />
+                Change Repository
+              </button>
             )}
           </div>
         </div>
