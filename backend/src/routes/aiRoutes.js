@@ -1,17 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const { mockOnboardingTour, mockStarterTasks, getRandomResponse } = require('../services/mockData');
+const { mockOnboardingTour, mockStarterTasks, getRandomResponse, getTourByRole } = require('../services/mockData');
 
 router.post('/generate-tour', async (req, res) => {
   try {
-    console.log('🎯 Generating mock onboarding tour...');
-    
+    const { role } = req.body;
+    console.log('Generating onboarding tour for role:', role || 'default');
+
     setTimeout(() => {
+      const tourData = role ? getTourByRole(role) : mockOnboardingTour;
       res.status(200).json({
         success: true,
-        data: mockOnboardingTour
+        data: tourData,
+        role: role || 'backend'
       });
-    }, 1200);
+    }, 800);
   } catch (error) {
     console.error('Error generating tour:', error);
     res.status(500).json({
@@ -34,10 +37,10 @@ router.post('/ask', async (req, res) => {
     }
 
     console.log('💬 Answering question:', question);
-    
+
     setTimeout(() => {
       const answer = getRandomResponse(question);
-      
+
       res.status(200).json({
         success: true,
         data: { question, answer }
@@ -56,7 +59,7 @@ router.post('/ask', async (req, res) => {
 router.get('/starter-tasks', async (req, res) => {
   try {
     console.log('✨ Loading mock starter tasks...');
-    
+
     setTimeout(() => {
       res.status(200).json({
         success: true,

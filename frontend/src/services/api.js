@@ -31,8 +31,8 @@ export const getFileDetails = async (filePath) => {
 /**
  * Generate onboarding tour
  */
-export const generateTour = async () => {
-  const response = await api.post('/api/ai/generate-tour');
+export const generateTour = async (role = null) => {
+  const response = await api.post('/api/ai/generate-tour', { role });
   return response.data;
 };
 
