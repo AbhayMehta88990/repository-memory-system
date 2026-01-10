@@ -1,4 +1,4 @@
-/* Dashboard Styles */
+/* Dashboard Styles - Professional Design */
 .dashboard {
   animation: fadeIn 0.3s ease-in;
 }
@@ -15,6 +15,15 @@
   }
 }
 
+.dashboard-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--paragraph);
+}
+
+/* Dashboard Header */
 .dashboard-header {
   text-align: center;
   margin-bottom: var(--spacing-2xl);
@@ -27,28 +36,26 @@
 
 /* Demo Info Banner */
 .demo-info-banner {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: var(--button-text);
+  background: var(--secondary);
+  border-left: 4px solid var(--highlight);
   margin-bottom: var(--spacing-2xl);
-  border: none;
 }
 
 .demo-info-content h3 {
-  color: var(--button-text);
+  color: var(--headline);
   margin-bottom: var(--spacing-md);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .demo-info-content p {
-  color: var(--button-text);
+  color: var(--paragraph);
   line-height: 1.7;
   margin-bottom: var(--spacing-md);
-  opacity: 0.95;
 }
 
 .demo-info-content strong {
+  color: var(--headline);
   font-weight: 600;
-  text-decoration: underline;
 }
 
 .demo-features {
@@ -60,19 +67,19 @@
 
 .feature-tag {
   padding: var(--spacing-xs) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--main);
+  border: 1px solid var(--highlight);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
   font-weight: 500;
-  backdrop-filter: blur(10px);
+  color: var(--headline);
 }
 
 /* GitHub Info Banner */
 .github-info-banner {
-  background: linear-gradient(135deg, var(--highlight) 0%, #6b5a3e 100%);
-  color: var(--button-text);
+  background: var(--secondary);
+  border-left: 4px solid var(--highlight);
   margin-bottom: var(--spacing-2xl);
-  border: none;
 }
 
 .github-info-content {
@@ -84,23 +91,26 @@
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-xs) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--main);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
   margin-bottom: var(--spacing-md);
+  color: var(--paragraph);
+}
+
+.repo-indicator svg {
+  color: var(--highlight);
 }
 
 .github-info-content h3 {
-  color: var(--button-text);
+  color: var(--headline);
   margin-bottom: var(--spacing-sm);
   font-size: 1.5rem;
 }
 
 .github-info-content .repo-description {
-  color: var(--button-text);
-  opacity: 0.9;
-  margin: 0;
-  margin-bottom: var(--spacing-md);
+  color: var(--paragraph);
+  margin: 0 0 var(--spacing-md) 0;
 }
 
 .change-repo-btn {
@@ -108,26 +118,84 @@
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--main);
+  border: 1px solid var(--highlight);
   border-radius: var(--radius-md);
-  color: var(--button-text);
+  color: var(--headline);
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: var(--spacing-sm);
 }
 
 .change-repo-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--highlight);
+  color: var(--button-text);
 }
 
 /* Stats Grid */
 .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
 
-/* Quick Actions */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  background: var(--main);
+  border: 1px solid var(--secondary);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  border-color: var(--highlight);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary);
+  border-radius: var(--radius-md);
+  color: var(--highlight);
+  flex-shrink: 0;
+}
+
+.stat-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--headline);
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: var(--paragraph);
+  margin-top: var(--spacing-xs);
+}
+
+/* Quick Actions - Original Card Style */
+.quick-actions {
+  margin-bottom: var(--spacing-xl);
+}
+
 .quick-actions h2 {
   margin-bottom: var(--spacing-lg);
 }
@@ -177,6 +245,23 @@
   opacity: 0.8;
 }
 
+/* Grid Layouts */
+.grid {
+  display: grid;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Card Base */
+.card h2 {
+  margin-bottom: var(--spacing-lg);
+  font-size: 1.25rem;
+}
+
 /* Languages List */
 .languages-list {
   display: flex;
@@ -196,9 +281,35 @@
 .language-name {
   font-weight: 500;
   text-transform: capitalize;
+  color: var(--headline);
 }
 
-/* File Items */
+.badge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--main);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--paragraph);
+}
+
+/* List Items */
+.list-unstyled {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-item {
+  padding: var(--spacing-md);
+  background: var(--secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.list-item:last-child {
+  margin-bottom: 0;
+}
+
 .file-name {
   font-weight: 600;
   color: var(--headline);
@@ -233,12 +344,17 @@
   border-bottom: 2px solid var(--highlight);
 }
 
-.stat-header .stat-label {
+.stat-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
   font-size: 1rem;
   font-weight: 600;
   color: var(--headline);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+}
+
+.stat-title svg {
+  color: var(--highlight);
 }
 
 .stat-count {
@@ -267,20 +383,10 @@
   transform: translateX(2px);
 }
 
-.detail-item.more {
-  background-color: transparent;
-  font-style: italic;
-}
-
 .detail-name {
   font-weight: 500;
   color: var(--headline);
   font-size: 0.9rem;
-}
-
-.detail-name.no-data {
-  color: var(--paragraph);
-  font-style: italic;
 }
 
 .detail-file {
@@ -289,28 +395,80 @@
   font-family: monospace;
 }
 
-/* Analysis Note for GitHub Mode */
+.detail-more {
+  padding: var(--spacing-sm);
+  text-align: center;
+  color: var(--paragraph);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+/* Analysis Note */
 .analysis-note {
-  background-color: var(--secondary);
-  border-radius: var(--radius-md);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
   padding: var(--spacing-md);
+  background: var(--main);
+  border-radius: var(--radius-md);
   border-left: 3px solid var(--highlight);
 }
 
+.analysis-note svg {
+  color: var(--highlight);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
 .analysis-note p {
+  margin: 0;
   color: var(--paragraph);
   font-size: 0.85rem;
-  line-height: 1.6;
-  margin: 0;
+  line-height: 1.5;
+}
+
+/* Empty State */
+.empty-state {
+  color: var(--paragraph);
+  font-style: italic;
+  text-align: center;
+  padding: var(--spacing-md);
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-header h1 {
     font-size: 1.75rem;
   }
 
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
   .actions-grid {
     grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+  }
+
+  .demo-info-content h3 {
+    font-size: 1.25rem;
   }
 }

@@ -1,18 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiCode, FiFileText, FiLayers, FiGitBranch, FiRefreshCw } from 'react-icons/fi';
+import {
+  FiCode,
+  FiFileText,
+  FiLayers,
+  FiGitBranch,
+  FiRefreshCw,
+  FiFile,
+  FiGlobe,
+  FiCpu,
+  FiPackage,
+  FiFolder,
+  FiLink,
+  FiInfo
+} from 'react-icons/fi';
 import '../styles/Dashboard.css';
 
 const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, onChangeRepo }) => {
   if (!analysisData) {
-    return <div>Loading...</div>;
+    return <div className="dashboard-loading">Loading analysis data...</div>;
   }
 
   const { summary, metadata, keyFiles } = analysisData;
 
   return (
     <div className="dashboard">
-      {/* Demo Info Banner - Only show in demo mode */}
+      {/* Demo Mode Banner */}
       {!isGitHubMode && (
         <div className="demo-info-banner card">
           <div className="demo-info-content">
@@ -52,27 +65,43 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, on
         </div>
       )}
 
+      {/* Dashboard Header */}
       <div className="dashboard-header">
         <h1>Welcome to {summary.projectName}</h1>
       </div>
 
-      {/* Stats Grid */}
-      <div className="stats-grid grid grid-3">
+      {/* Stats Grid - Overview */}
+      <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-value">{summary.totalFiles}</div>
-          <div className="stat-label">Files</div>
+          <div className="stat-icon">
+            <FiFile />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{summary.totalFiles}</span>
+            <span className="stat-label">Total Files</span>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-value">{summary.totalLines.toLocaleString()}</div>
-          <div className="stat-label">Lines of Code</div>
+          <div className="stat-icon">
+            <FiCode />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{summary.totalLines.toLocaleString()}</span>
+            <span className="stat-label">Lines of Code</span>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-value">{Object.keys(summary.languages).length}</div>
-          <div className="stat-label">Languages</div>
+          <div className="stat-icon">
+            <FiGlobe />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{Object.keys(summary.languages).length}</span>
+            <span className="stat-label">Languages</span>
+          </div>
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Original Card Style */}
       <div className="quick-actions card">
         <h2>Quick Actions</h2>
         <div className="actions-grid">
@@ -102,7 +131,7 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, on
         </div>
       </div>
 
-      {/* Project Overview */}
+      {/* Project Overview - Two Column */}
       <div className="grid grid-2">
         {/* Languages */}
         <div className="card">
@@ -117,7 +146,7 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, on
           </div>
         </div>
 
-        {/* Key Files */}
+        {/* Entry Points */}
         <div className="card">
           <h2>Entry Points</h2>
           {keyFiles.entryPoints.length > 0 ? (
@@ -130,7 +159,7 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, on
               ))}
             </ul>
           ) : (
-            <p>No entry points detected</p>
+            <p className="empty-state">No entry points detected</p>
           )}
         </div>
       </div>
@@ -139,9 +168,13 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, on
       <div className="card">
         <h2>Code Statistics</h2>
         <div className="code-stats-container">
+          {/* Functions */}
           <div className="stat-section">
             <div className="stat-header">
-              <span className="stat-label">Functions</span>
+              <div className="stat-title">
+                <FiCpu />
+                <span>Functions</span>
+              </div>
               <span className="stat-count">{metadata.functions.length}</span>
             </div>
             <div className="stat-details">
@@ -154,26 +187,29 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, on
                     </div>
                   ))}
                   {metadata.functions.length > 5 && (
-                    <div className="detail-item more">
-                      <span className="detail-name">+{metadata.functions.length - 5} more functions</span>
+                    <div className="detail-more">
+                      +{metadata.functions.length - 5} more functions
                     </div>
                   )}
                 </>
               ) : isGitHubMode ? (
                 <div className="analysis-note">
-                  <p>Function detection requires parsing source files, which is not available for GitHub repositories in this version. This feature works in demo mode where the codebase has been pre-analyzed.</p>
+                  <FiInfo />
+                  <p>Function detection requires code parsing, available in demo mode.</p>
                 </div>
               ) : (
-                <div className="detail-item">
-                  <span className="detail-name no-data">No functions detected</span>
-                </div>
+                <p className="empty-state">No functions detected</p>
               )}
             </div>
           </div>
 
+          {/* Classes */}
           <div className="stat-section">
             <div className="stat-header">
-              <span className="stat-label">Classes</span>
+              <div className="stat-title">
+                <FiPackage />
+                <span>Classes</span>
+              </div>
               <span className="stat-count">{metadata.classes.length}</span>
             </div>
             <div className="stat-details">
@@ -186,31 +222,40 @@ const Dashboard = ({ analysisData, isGitHubMode = false, selectedRepo = null, on
                 ))
               ) : isGitHubMode ? (
                 <div className="analysis-note">
-                  <p>Class detection requires parsing source files, which is not available for GitHub repositories in this version. This feature works in demo mode where the codebase has been pre-analyzed.</p>
+                  <FiInfo />
+                  <p>Class detection requires code parsing, available in demo mode.</p>
                 </div>
               ) : (
-                <div className="detail-item">
-                  <span className="detail-name no-data">No classes defined</span>
-                </div>
+                <p className="empty-state">No classes in this repository</p>
               )}
             </div>
           </div>
 
+          {/* Dependencies */}
           <div className="stat-section">
             <div className="stat-header">
-              <span className="stat-label">Dependencies</span>
+              <div className="stat-title">
+                <FiLink />
+                <span>Dependencies</span>
+              </div>
               <span className="stat-count">{metadata.imports.length}</span>
             </div>
             <div className="stat-details">
-              {metadata.imports.slice(0, 5).map((imp, idx) => (
-                <div key={idx} className="detail-item">
-                  <span className="detail-name">{imp.source}</span>
-                </div>
-              ))}
-              {metadata.imports.length > 5 && (
-                <div className="detail-item more">
-                  <span className="detail-name">+{metadata.imports.length - 5} more dependencies</span>
-                </div>
+              {metadata.imports.length > 0 ? (
+                <>
+                  {metadata.imports.slice(0, 5).map((imp, idx) => (
+                    <div key={idx} className="detail-item">
+                      <span className="detail-name">{imp.source}</span>
+                    </div>
+                  ))}
+                  {metadata.imports.length > 5 && (
+                    <div className="detail-more">
+                      +{metadata.imports.length - 5} more dependencies
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p className="empty-state">No dependencies found</p>
               )}
             </div>
           </div>
